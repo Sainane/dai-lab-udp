@@ -1,4 +1,4 @@
-package org.example;
+package ch.heig.dai.udp.musician;
 
 public class Main {
     public static void main(String[] args) {
