@@ -8,7 +8,7 @@ import java.net.InetSocketAddress;
 import static java.nio.charset.StandardCharsets.*;
 
 class MulticastSender {
-    final static String IPADDRESS = "239.255.22.5";
+    final static String IPADDRESS = "localhost";
     final static int PORT = 9904;
 
     public static void main(String[] args) {
