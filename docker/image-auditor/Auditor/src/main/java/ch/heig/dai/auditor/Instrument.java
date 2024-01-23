@@ -1,4 +1,4 @@
-package ch.heig.dai.udp.musician;
+package ch.heig.dai.auditor;
 
 public enum Instrument {
     piano("ti-ta-ti"),

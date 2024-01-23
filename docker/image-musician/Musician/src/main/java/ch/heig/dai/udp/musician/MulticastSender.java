@@ -13,17 +13,21 @@ class MulticastSender {
 
     public static void main(String[] args) {
         Instrument instrument = Instrument.valueOf(args[0]);
-        Musician musician = new Musician(instrument);
-        MusicianJson musicianJson = new MusicianJson(musician);
-        try (DatagramSocket socket = new DatagramSocket()) {
-
-            String message = musicianJson.toJson();
-            byte[] payload = message.getBytes(UTF_8);
-            InetSocketAddress dest_address = new InetSocketAddress(IPADDRESS, PORT);
-            DatagramPacket packet = new DatagramPacket(payload, payload.length, dest_address);
-            socket.send(packet);
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+        long lastActivity = 0;
+            MusicianJson musicianJson = new MusicianJson(instrument);
+            try (DatagramSocket socket = new DatagramSocket()) {
+                while (true) {
+                    if (System.currentTimeMillis() - lastActivity < 1000) continue;
+                    lastActivity = System.currentTimeMillis();
+                    String message = musicianJson.toJson();
+                    byte[] payload = message.getBytes(UTF_8);
+                    InetSocketAddress dest_address = new InetSocketAddress(IPADDRESS, PORT);
+                    DatagramPacket packet = new DatagramPacket(payload, payload.length, dest_address);
+                    socket.send(packet);
+                }
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
     }
-}
+

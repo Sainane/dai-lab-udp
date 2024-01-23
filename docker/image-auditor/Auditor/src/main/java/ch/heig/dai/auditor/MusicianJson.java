@@ -1,5 +1,7 @@
-package ch.heig.dai.udp.musician;
+package ch.heig.dai.auditor;
+
 import com.google.gson.Gson;
+
 import java.util.UUID;
 
 public class MusicianJson {
