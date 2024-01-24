@@ -25,7 +25,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>ch.heig.dai.udp.musician.Main</mainClass>
+                            <mainClass>ch.heig.dai.udp.musician.MulticastSender</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

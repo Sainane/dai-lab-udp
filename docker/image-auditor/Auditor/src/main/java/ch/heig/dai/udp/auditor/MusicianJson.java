@@ -1,4 +1,4 @@
-package ch.heig.dai.auditor;
+package ch.heig.dai.udp.auditor;
 
 import com.google.gson.Gson;
 

@@ -1,10 +1,7 @@
-package ch.heig.dai.auditor;
+package ch.heig.dai.udp.auditor;
 
 
 import com.google.gson.Gson;
-
-import java.util.Date;
-import java.util.UUID;
 
 
 public class MusicianToSend {
@@ -25,10 +22,7 @@ public class MusicianToSend {
     }
 
     public boolean isActive() {
-        if (System.currentTimeMillis() - lastActivity <= 5000) {
-            return true;
-        }
-        return false;
+        return System.currentTimeMillis() - lastActivity < 5000;
     }
 
 }

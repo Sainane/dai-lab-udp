@@ -1,6 +1,5 @@
-package ch.heig.dai.auditor;
+package ch.heig.dai.udp.auditor;
 
-import ch.heig.dai.auditor.*;
 
 public class Main {
     public static void main(String[] args) {
