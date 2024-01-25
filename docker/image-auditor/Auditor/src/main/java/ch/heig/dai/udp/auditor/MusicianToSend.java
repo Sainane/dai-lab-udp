@@ -22,7 +22,7 @@ public class MusicianToSend {
     }
 
     public boolean isActive() {
-        return System.currentTimeMillis() - lastActivity < 5000;
+        return System.currentTimeMillis() - lastActivity <= 5000;
     }
 
 }

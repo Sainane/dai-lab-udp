@@ -4,21 +4,33 @@ package ch.heig.dai.udp.auditor;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.net.MulticastSocket;
+import java.net.InetSocketAddress;
+import java.net.NetworkInterface;
 
-public class MultiCastReceiver implements Runnable {
 
-    public static ArrayList<MusicianToSend> musicians = new ArrayList<>();
+
+public class MultiCastReceiver extends Thread {
+
+    public static volatile ArrayList<MusicianToSend> musicians = new ArrayList<>();
+
+    final static String IPADDRESS = "239.255.22.5";
 
     final static int PORT = 9904;
 
     public void run() {
-        while (true) {
-            try (DatagramSocket socket = new DatagramSocket(PORT)) {
+        System.out.println("From the MultiCast Thread: " + musicians);
 
+            try (MulticastSocket socket = new MulticastSocket(PORT)) {
+                InetSocketAddress group_address =  new InetSocketAddress(IPADDRESS, PORT);
+                // in container eth0 et mac en0
+                NetworkInterface netif = NetworkInterface.getByName("eth0");
+                socket.joinGroup(group_address, netif);
+
+                while (!Thread.interrupted()) {
                 byte[] buffer = new byte[1024];
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
@@ -32,11 +44,10 @@ public class MultiCastReceiver implements Runnable {
                 } else {
                     musicians.add(musicianToSend);
                 }
-                // musicians = activeMusicians();
-            } catch (IOException e) {
+            }
+        }  catch (IOException e) {
                 System.out.println("Exception: " + e);
             }
-        }
     }
 
     public static ArrayList<MusicianToSend> activeMusicians() {

@@ -1,26 +1,23 @@
 package ch.heig.dai.udp.auditor;
 
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class Main {
-    public static void main(String[] args) {
 
-        MusicianJson musicianJson = new MusicianJson(Instrument.drum);
-        MusicianToSend musician = new MusicianToSend(musicianJson);
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
 
-        Thread tcp = Thread.startVirtualThread(new TcpSendMusicians());
-        Thread udp = Thread.startVirtualThread(new MultiCastReceiver());
+        MultiCastReceiver multiCastReceiver = new MultiCastReceiver();
+        TcpSendMusicians tcpSendMusicians = new TcpSendMusicians();
+        ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
 
-        // tcp.start();
-        // udp.start();
-        try {
-            tcp.join();
-        } catch (InterruptedException e) {
-            System.out.println("Exception: " + e);
-        }
-        try {
-            udp.join();
-        } catch (InterruptedException e) {
-            System.out.println("Exception: " + e);
-        }
+        executor.submit(multiCastReceiver::run);
+        executor.submit(tcpSendMusicians::run).get();
+
+
+
     }
 }
